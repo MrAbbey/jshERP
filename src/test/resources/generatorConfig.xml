@@ -5,7 +5,7 @@
 
 <generatorConfiguration>
     <classPathEntry
-            location="E:\maven-repository\default\mysql\mysql-connector-java\5.1.47\mysql-connector-java-5.1.47.jar"/>
+            location="D:\JavaTool\apache-maven-3.2.3\repository\mysql\mysql-connector-java\5.1.47\mysql-connector-java-5.1.47.jar"/>
 
     <context id="DB2Tables" targetRuntime="MyBatis3" defaultModelType="flat">
         <commentGenerator>
@@ -14,8 +14,8 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/jsh_erp?generateSimpleParameterMetadata=true"
-                        userId="root" password="123456">
+                        connectionURL="jdbc:mysql://47.98.186.164:3306/jsh_erp?generateSimpleParameterMetadata=true"
+                        userId="root" password="Q1Pd7Tp58FOk6qWp">
         </jdbcConnection>
 
         <javaTypeResolver>
@@ -67,5 +67,6 @@
         <table tableName="jsh_orga_user_rel" domainObjectName="OrgaUserRel"></table>
         <table tableName="jsh_tenant" domainObjectName="Tenant"></table>
         <table tableName="jsh_msg" domainObjectName="Msg"></table> -->
+        <table tableName="jsh_orders" domainObjectName="Orders"></table>
     </context>
 </generatorConfiguration>

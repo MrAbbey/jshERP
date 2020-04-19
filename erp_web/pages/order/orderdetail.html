@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>订单信息</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <!-- 指定以IE8的方式来渲染 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8"/>
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/js/bootstrap/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="/css/jsherp.css"/>
+    <link rel="stylesheet" type="text/css" href="/js/easyui/themes/default/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="/js/easyui/themes/icon.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/common.css"/>
+    <script type="text/javascript" src="/js/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/js/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script src="/js/handlebars.js"></script>
+    <script src="/js/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="/js/common/common.js"></script>
+    <script src="/js/pages/order/order.js"></script>
+</head>
+<body>
+<!-- 数据显示table -->
+<div id="tablePanel" class="easyui-panel" data-options="fit:true" style="padding:1px;top:300px;" title="订单信息列表" iconCls="icon-list">
+    <div class="box-body form-inline">
+        <div class="form-group">
+            <label class="control-label">订单时间：</label>
+            <div class="control-inline">
+                <input type="text" id="searchBeginTime" name="searchBeginTime" value="" maxlength="100" class="easyui-datebox width-120"/>
+                -
+                <input type="text" id="searchEndTime" name="searchEndTime" value="" maxlength="100" class="easyui-datebox width-120"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" id="searchBtn">查询</a>&nbsp;
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-redo" id="searchResetBtn">重置</a>
+        </div>
+    </div>
+    <table id="tableData" style="top:300px;border-bottom-color:#FFFFFF"></table>
+</div>
+<div id="orderDlg" class="easyui-dialog" style="padding:10px 20px;" fit="true"
+     closed="true" buttons="#dlg-buttons" modal="true" cache="false" collapsible="false" closable="true">
+    <form id="orderFM">
+        <table width="100%" style="min-width:1100px;">
+            <tr>
+                <td style="width: 80px;height: 20px">订单时间</td>
+                <td style="width: 180px;padding:5px">
+                    <input name="ordertime" id="ordertime" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="txt Wdate radius-ui" style="width: 160px;"/>
+                </td>
+                <td style="width: 60px;height: 20px">订车单位</td>
+                <td style="width:180px;padding:5px;">
+                    <input name="bookingunit" id="bookingunit" class="easyui-textbox" style="width: 160px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td>车型</td>
+                <td style="padding:5px;">
+                    <input name="vehicletype" id="vehicletype" class="easyui-textbox" style="width: 160px;"/>
+                </td>
+                <td>型号</td>
+                <td style="padding:5px;">
+                    <input name="model" id="model" class="easyui-textbox" style="width: 160px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td>底盘供应商</td>
+                <td style="padding:5px;">
+                    <input name="chassissupplier" id="chassissupplier" class="easyui-textbox" style="width: 160px;"/>
+                </td>
+                <td>底盘号</td>
+                <td style="padding:5px;">
+                    <input name="chassisnumber" id="chassisnumber" class="easyui-textbox" style="width: 160px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td>底盘配置</td>
+                <td style="padding:5px;">
+                    <input name="chassisconfig" id="chassisconfig" class="easyui-textbox" style="width: 160px;"/>
+                </td>
+                <td>底盘金额</td>
+                <td style="padding:5px;">
+                    <input name="chassisamount" id="chassisamount" class="radius-ui" style="width: 160px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td>底盘付款情况</td>
+                <td style="padding:5px;">
+                    <input name="chassispayment" id="chassispayment" class="easyui-textbox" style="width: 160px;"/>
+                </td>
+                <td>底盘税票</td>
+                <td style="padding:5px;">
+                    <input name="chassistaxticket" id="chassistaxticket" class="easyui-textbox" style="width: 160px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td>改装厂</td>
+                <td style="padding:5px;">
+                    <input name="modifiedvehicle" id="modifiedvehicle" class="easyui-textbox" style="width: 160px;"/>
+                </td>
+                <td>改装费</td>
+                <td style="padding:5px;">
+                    <input name="modificationfee" id="modificationfee" class="radius-ui" style="width: 160px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td>改装备注</td>
+                <td style="padding:5px;">
+                    <input name="modificationdesc" id="modificationdesc" class="easyui-textbox" style="width: 160px;"/>
+                </td>
+                <td>额外配置</td>
+                <td style="padding:5px;">
+                    <input name="addconfig" id="addconfig" class="easyui-textbox" style="width: 160px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td>税票</td>
+                <td style="padding:5px;">
+                    <input name="taxticket" id="taxticket" class="easyui-textbox" style="width: 160px;"/>
+                </td>
+                <td>整车出厂成本</td>
+                <td style="padding:5px;">
+                    <input name="vehicledeliverycost" id="vehicledeliverycost" class="radius-ui" style="width: 160px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td>运费</td>
+                <td style="padding:5px;">
+                    <input name="freight" id="freight" class="radius-ui" style="width: 160px;"/>
+                </td>
+                <td>司机</td>
+                <td style="padding:5px;">
+                    <input name="driver" id="driver" class="easyui-textbox" style="width: 160px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td>运费结算情况</td>
+                <td style="padding:5px;">
+                    <input name="freightsettlement" id="freightsettlement" class="easyui-textbox" style="width: 160px;"/>
+                </td>
+                <td>发车时间</td>
+                <td style="padding:5px;">
+                    <input name="departuretime" id="departuretime" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="txt Wdate radius-ui" style="width: 160px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td>交车时间</td>
+                <td style="padding:5px;">
+                    <input name="deliverytime" id="deliverytime" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" class="txt Wdate radius-ui" style="width: 160px;"/>
+                </td>
+                <td>总成本</td>
+                <td style="padding:5px;">
+                    <input name="totalcost" id="totalcost" class="radius-ui" style="width: 160px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td>销售价格</td>
+                <td style="padding:5px;">
+                    <input name="sellingprice" id="sellingprice" class="radius-ui" style="width: 160px;"/>
+                </td>
+                <td>合同价格</td>
+                <td style="padding:5px;">
+                    <input name="contractprice" id="contractprice" class="radius-ui" style="width: 160px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td>返利</td>
+                <td style="padding:5px;">
+                    <input name="rebate" id="rebate" class="radius-ui" style="width: 160px;"/>
+                </td>
+                <td>回款情况</td>
+                <td style="padding:5px;">
+                    <input name="repaymentstatus" id="repaymentstatus" class="easyui-textbox" style="width: 160px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td>有无下欠</td>
+                <td style="padding:5px;">
+                    <input name="stillowing" id="stillowing" class="easyui-textbox" style="width: 160px;"/>
+                </td>
+                <td>整车税票</td>
+                <td style="padding:5px;">
+                    <input name="vehicletaxreceipt" id="vehicletaxreceipt" class="easyui-textbox" style="width: 160px;"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" id="saveSupplier" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+    <a href="javascript:void(0)" id="cancelSupplier" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#orderDlg').dialog('close')">取消</a>
+</div>
+</body>
+</html>

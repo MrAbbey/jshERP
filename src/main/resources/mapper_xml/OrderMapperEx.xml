@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsh.erp.datasource.mappers.OrderMapperEx">
+
+    <resultMap extends="com.jsh.erp.datasource.mappers.OrdersMapper.BaseResultMap" id="ResultMapEx" type="com.jsh.erp.datasource.vo.OrdersVo4List">
+    </resultMap>
+
+    <select id="selectByConditionOrder" parameterType="com.jsh.erp.datasource.entities.OrdersExample" resultMap="ResultMapEx">
+        select *
+        FROM jsh_orders
+        where 1=1
+        <if test="searchBeginTime != null">
+            and OrderTime <![CDATA[ >= ]]> #{searchBeginTime}
+        </if>
+        <if test="searchEndTime != null">
+            and OrderTime <![CDATA[ <= ]]> #{searchEndTime}
+        </if>
+        and ifnull(delete_Flag,'0') !='1'
+        order by id desc
+        <if test="offset != null and rows != null">
+            limit #{offset},#{rows}
+        </if>
+    </select>
+    <select id="countsByOrder" resultType="java.lang.Long">
+        SELECT
+        COUNT(id)
+        FROM jsh_orders
+        WHERE 1=1
+        <if test="searchBeginTime != null">
+            and OrderTime <![CDATA[ >= ]]> #{searchBeginTime}
+        </if>
+        <if test="searchEndTime != null">
+            and OrderTime <![CDATA[ <= ]]> #{searchEndTime}
+        </if>
+        and ifnull(delete_Flag,'0') !='1'
+    </select>
+
+    <select id="findByAll" parameterType="com.jsh.erp.datasource.entities.OrdersExample" resultMap="com.jsh.erp.datasource.mappers.OrdersMapper.BaseResultMap">
+        select *
+        FROM jsh_orders
+        where 1=1
+        <if test="searchBeginTime != null">
+            and OrderTime <![CDATA[ >= ]]> #{searchBeginTime}
+        </if>
+        <if test="searchEndTime != null">
+            and OrderTime <![CDATA[ <= ]]> #{searchEndTime}
+        </if>
+        and ifnull(delete_Flag,'0') !='1'
+    </select>
+    <update id="batchDeleteOrderByIds">
+        update jsh_orders
+        set delete_Flag='1'
+        where 1=1
+        and id in (
+        <foreach collection="ids" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </update>
+</mapper>
