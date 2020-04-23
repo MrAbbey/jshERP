@@ -53,9 +53,9 @@ public class OrderComponent implements ICommonQuery{
         }
         List<OrdersVo4List> ordersVo4Lists = orderService.select(searchBeginDate, searchEndDate, QueryUtils.offset(map), QueryUtils.rows(map));
         for(OrdersVo4List ordersVo4List : ordersVo4Lists){
-            ordersVo4List.setOrdertimeStr(getCenternTime(ordersVo4List.getOrdertime()));
-            ordersVo4List.setDeliverytimeStr(getCenternTime(ordersVo4List.getDeliverytime()));
-            ordersVo4List.setDeparturetimeStr(getCenternTime(ordersVo4List.getDeparturetime()));
+            ordersVo4List.setOrdertimeStr(ordersVo4List.getOrdertime() ==null ? "" : getCenternTime(ordersVo4List.getOrdertime()));
+            ordersVo4List.setDeliverytimeStr(ordersVo4List.getDeliverytime() == null ? "" : getCenternTime(ordersVo4List.getDeliverytime()));
+            ordersVo4List.setDeparturetimeStr(ordersVo4List.getDeparturetime() == null ? "" : getCenternTime(ordersVo4List.getDeparturetime()));
         }
         return ordersVo4Lists;
     }
@@ -71,7 +71,7 @@ public class OrderComponent implements ICommonQuery{
             searchBeginDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(searchBeginTime + " 00:00:00");
         }
         if(StringUtil.isNotEmpty(searchEndTime)){
-            searchEndDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(searchBeginTime+ " 23:59:59");
+            searchEndDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(searchEndTime+ " 23:59:59");
         }
         return orderService.countSupplier(searchBeginDate, searchEndDate);
     }
